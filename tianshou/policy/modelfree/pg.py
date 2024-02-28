@@ -194,6 +194,7 @@ class PGPolicy(BasePolicy[TPGTrainingStats], Generic[TPGTrainingStats]):
         if isinstance(logits, tuple):
             dist = self.dist_fn(*logits)
         else:
+            logits *= to_torch_as(mask, logits) # Correction from https://github.com/thu-ml/tianshou/issues/542
             dist = self.dist_fn(logits)
 
         # in this case, the dist is unused!
